@@ -57,7 +57,7 @@ class HM{
 		foreach($units as $unit){
 			if (strpos($unit,"HM") === false){
 				$name ="\\hitchhike2\\".$unit;
-				$obj = new $name();
+				$obj = new $name($hm);
 				$implements = class_implements($obj);
 				foreach($implements as $interface){
 					if (!isset($this->Units[$interface])){
@@ -84,7 +84,7 @@ class HM{
 					echo $obj->getName().": ".$obj->getDescription()." [".$obj->getVersion()."]\n";
 					$methods = $obj->getCLIMethods();
 					foreach($methods as $method => $description){
-						echo "- ".$method .": ".$description."\n";
+						echo "- hm.php ".$obj->getName()." ".$method .": ".$description."\n";
 					}		
 				}
 			}

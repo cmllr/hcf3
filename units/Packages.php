@@ -25,7 +25,9 @@ class Packages implements IUnit{
     }
     public function getCLIMethods(){
         return [
-            "install <package 1> <package n>" => "Installs given package(s) to your intallation."
+            "install <package 1> <package n>" => "Installs given package(s) to your intallation.",
+            "remove <package 1> <package n>" => "Remove given package(s) from your installation.",
+            "search <package 1> <package n>" => "Search for given package(s) on the master server."
         ];
     }
     public function install($packages){

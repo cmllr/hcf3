@@ -19,9 +19,7 @@ class Meta implements IUnit,IWebUnit{
         echo "unlink".__BASEDIR__."/units/Packages.php";
     }
     public function getCLIMethods(){
-        return [
-            ""
-        ];
+        return [];
     }
     public function getEntryPoints(){
         return [
