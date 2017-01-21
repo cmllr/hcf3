@@ -1,0 +1,20 @@
+{
+    "name": "gethhitchhike/hitchhike",
+    "description": "Simple, painless blogging CMS",
+    "type": "project",
+    "require": {
+        "bcosca/fatfree": "^3.6"
+    },
+    "license": "agpl",
+    "authors": [
+        {
+            "name": "cmllr",
+            "email": "fury224@googlemail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "hitchhike2\\": "units/"
+        }
+    }
+}

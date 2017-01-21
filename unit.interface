@@ -1,0 +1,11 @@
+<?php
+namespace hitchhike2;
+require __BASEDIR__."/header.agpl";
+
+interface IUnit{
+    public function getName();
+    public function getVersion();
+    public function getDescription();
+    public function _install();
+    public function _remove();
+}
