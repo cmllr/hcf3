@@ -1,6 +1,5 @@
 <?php
 namespace hitchhike2;
-use \hitchhike2;
 define("__BASEDIR__",__DIR__);
 define("__VERSION__","2.0a");
 require __DIR__."/header.agpl";
