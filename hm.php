@@ -11,6 +11,7 @@ $hm = new HM($argv);
 class HM{
 	public $SkeletonUnit = null;
 	public $ManagerUnit = null;
+	public $PostUnit = null;
 	public function __construct($argv = null){
 		if (php_sapi_name() !== 'cli'){
 			$this->setUpForWeb();
@@ -63,6 +64,9 @@ class HM{
 				if (in_array("hitchhike2\\IManager",$implements)){
 					$this->ManagerUnit = $obj;
 				}
+				if (in_array("hitchhike2\\IPostUnit",$implements)){
+					$this->PostUnit = $obj;
+				}
 			}
 		}
 	}
@@ -72,13 +76,15 @@ class HM{
 				$name ="\\hitchhike2\\".$unit;
 				$obj = new $name();
 				$implements = class_implements($obj);
-				if (in_array("hitchhike2\\ISkeleton",$implements)){
-					$this->SkeletonUnit = $obj;
-				}
-				echo $obj->getName().": ".$obj->getDescription()." [".$obj->getVersion()."]\n";
-				$methods = $obj->getCLIMethods();
-				foreach($methods as $method => $description){
-					echo "- ".$method .": ".$description."\n";
+				if (in_array("hitchhike2\\IUnit",$implements)){
+					if (in_array("hitchhike2\\ISkeleton",$implements)){
+						$this->SkeletonUnit = $obj;
+					}
+					echo $obj->getName().": ".$obj->getDescription()." [".$obj->getVersion()."]\n";
+					$methods = $obj->getCLIMethods();
+					foreach($methods as $method => $description){
+						echo "- ".$method .": ".$description."\n";
+					}		
 				}
 			}
 		}

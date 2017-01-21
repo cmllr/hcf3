@@ -1,6 +1,11 @@
-<html>
-    <head>
-        <meta name="generator" value="Hitchhike <?php echo __VERSION__;?>">
-        <title></title>
-    </head>
-</html>
+INDEX 
+
+<?php
+    $markdown = new Parsedown();
+    foreach($posts as $post){
+        $post = $hm->PostUnit->getPost($post);
+        if (!is_null($post)){
+            include __DIR__."/post.tpl.php";
+        }
+    }
+?>

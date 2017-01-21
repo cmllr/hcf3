@@ -3,7 +3,8 @@
     "description": "Simple, painless blogging CMS",
     "type": "project",
     "require": {
-        "bcosca/fatfree": "^3.6"
+        "bcosca/fatfree": "^3.6",
+        "erusev/parsedown": "^1.6"
     },
     "license": "agpl",
     "authors": [

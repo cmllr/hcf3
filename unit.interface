@@ -18,3 +18,8 @@ interface ISkeleton{
 interface IManager{
     public function getMeta();
 }
+
+interface IPostUnit{
+    public function getPosts($path);
+    public function getPost($name);
+}
