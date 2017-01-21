@@ -4,7 +4,8 @@
     "type": "project",
     "require": {
         "bcosca/fatfree": "^3.6",
-        "erusev/parsedown": "^1.6"
+        "erusev/parsedown": "^1.6",
+        "suin/php-rss-writer": "^1.5"
     },
     "license": "agpl",
     "authors": [
