@@ -72,10 +72,21 @@ class Posts implements IUnit, IPostUnit{
                     $post->Content = str_replace($tag,"",$post->Content);
                 }
             }
-            $post->URL = $name;
+            $post->URL = str_replace(".md","",$name);
             $post->Date = filemtime($path);
             $post->Author = null;
+            $this->runContentCommands($post);
             return $post;
+        }
+    }
+    public function runContentCommands($post){
+        $pattern = "/(?<what>[a-zA-z]+)\((?<param>[^\)]+)\)/";
+        $matches  = [];
+        preg_match_all($pattern,$post->Content,$matches);
+        foreach($matches["what"] as $index => $match){
+            $param = $matches["param"][$index];
+            $post->{$match} = $param;
+            $post->Content = str_replace($match."(".$param.")","",$post->Content);
         }
     }
 }

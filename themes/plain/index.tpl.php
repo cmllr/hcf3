@@ -1,6 +1,7 @@
 INDEX 
 
 <?php
+
     $markdown = new Parsedown();
     foreach($posts as $post){
         $post = $hm->PostUnit->getPost($post);

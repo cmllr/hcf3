@@ -42,9 +42,19 @@ class Skeleton implements IUnit, ISkeleton{
         $f3->route('GET /post/@name',
             function($f3) use ($template,$meta,$title,$hm) {
                 $name = $f3->get("PARAMS.name");
-                $post = $hm->PostUnit->getPost($name);
+                $post = $hm->PostUnit->getPost($name.".md");
+                if (is_null($post)){
+                    header("Location: ../404");
+                    die();
+                }
                 $inner = $template."/post.tpl.php";
                 require_once $template."/template.tpl.php";
+            }
+        );
+         $f3->route('GET /404',
+            function($f3) use ($template,$meta,$title,$hm) {
+                http_response_code(404);
+                echo "Not found";
             }
         );
         $f3->run();
