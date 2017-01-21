@@ -11,6 +11,7 @@ class Post {
     public $Image;
     public $Tags;
     public $Hidden;
+    public $Page;
 }
 
 class Posts implements IUnit, IPostUnit{
@@ -57,6 +58,20 @@ class Posts implements IUnit, IPostUnit{
         $posts = [];
         foreach($files as $post){
             $posts[] = $this->getPost($post);
+        }
+        usort($posts,function($a,$b){
+            return $a->Date < $b->Date;
+        });
+        return $posts;
+    }
+    public function getPages($path){
+        $files = $this->getFiles($path);
+        $posts = [];
+        foreach($files as $post){
+            $p  = $this->getPost($post);
+            if ($p->Page){
+                $posts[] = $p;
+            }
         }
         usort($posts,function($a,$b){
             return $a->Date < $b->Date;
@@ -126,7 +141,9 @@ class Posts implements IUnit, IPostUnit{
                 $param = $rawparam;
             }
             
-
+            if ($match === "page"){
+                $param = $rawparam === "true";
+            }
             foreach($post as $prop => $val){
                 if (strtolower($prop) === strtolower($match)){
                     $post->{$prop} = $param;
@@ -137,11 +154,6 @@ class Posts implements IUnit, IPostUnit{
         }
         foreach($matches["what"] as $index => $match){
             $rawparam = $matches["param"][$index];
-            if ($match === "date"){
-                $param = $rawparam === "today" ? time() : strtotime($rawparam); //"Sticky post"
-            }else{
-                $param = $rawparam;
-            }
             $post->{$match} = $param;
             $post->Content = str_replace("~".$match."(".$rawparam.")","",$post->Content);
         }

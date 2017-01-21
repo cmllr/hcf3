@@ -40,7 +40,7 @@
 
     $markdown = new Parsedown();
     foreach($posts as $post){
-        if (!is_null($post)){
+        if (!is_null($post) && !$post->Page){
             include __DIR__."/post.tpl.php";
         }
     }

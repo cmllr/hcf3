@@ -67,8 +67,9 @@ class Skeleton implements IUnit, ISkeleton{
         $template = __BASEDIR__."/themes/".$meta->Theme;
         $title = $meta->Name;
         $hm = $this->hm;
+        $pages = $hm->PostUnit->getPages(__BASEDIR__."/content/");
         $f3->route('GET /',
-            function($f3) use ($template,$meta,$title,$hm){
+            function($f3) use ($template,$meta,$title,$hm,$pages){
                 $inner = $template."/index.tpl.php";
                 $posts = $hm->PostUnit->getPosts(__BASEDIR__."/content/");
                 require_once $template."/template.tpl.php";
@@ -78,7 +79,7 @@ class Skeleton implements IUnit, ISkeleton{
                 'GET /tag/@needle',
                 'GET /search/@needle'
             ],
-            function($f3) use ($template,$meta,$title,$hm){
+            function($f3) use ($template,$meta,$title,$hm,$pages){
                 $inner = $template."/index.tpl.php";
                 $tag = $f3->get("PARAMS.needle");
                 $title = $tag ."-".$meta->Name;
@@ -90,7 +91,7 @@ class Skeleton implements IUnit, ISkeleton{
             }
         );
         $f3->route('GET /post/@name',
-            function($f3) use ($template,$meta,$title,$hm) {
+            function($f3) use ($template,$meta,$title,$hm,$pages) {
                 $name = $f3->get("PARAMS.name");
                 $post = $hm->PostUnit->getPostByURL(urlencode($name));
                 $authors = $meta->Authors;
@@ -110,7 +111,7 @@ class Skeleton implements IUnit, ISkeleton{
             }
         );
          $f3->route('GET /404',
-            function($f3) use ($template,$meta,$title,$hm) {
+            function($f3) use ($template,$meta,$title,$hm,$pages) {
                 http_response_code(404);
                 echo "Not found";
             }

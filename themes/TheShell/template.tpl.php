@@ -24,7 +24,13 @@
         <div class="inner">
             <section class="copyright"><?php echo $meta->Copyright;?></section>
             <section class="poweredby">Proudly published with Hitchhike in <a href="https://github.com/mityalebedev/TheShell">The Shell</a> theme.</section>
-        </div>
+						<?php if (count($pages) != 0) :?>
+						<?php foreach($pages as $site):?>
+									<a href="<?php echo $meta->URL;?>post/<?php echo $site->URL;?>/"><?php echo $site->Title;?></a>
+								<?php endforeach;?>
+								<a href="<?php echo $meta->URL;?>feed/" data-no-instant>Feed</a>
+						<?php endif;?>
+				</div>
     </footer>
     <script type="text/javascript" src="<?php echo $meta->URL;?>themes/TheShell/particles.min.js"></script>
 	<script data-no-instant>
