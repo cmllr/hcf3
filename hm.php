@@ -57,7 +57,7 @@ class HM{
 		foreach($units as $unit){
 			if (strpos($unit,"HM") === false){
 				$name ="\\hitchhike2\\".$unit;
-				$obj = new $name($hm);
+				$obj = new $name($this);
 				$implements = class_implements($obj);
 				foreach($implements as $interface){
 					if (!isset($this->Units[$interface])){

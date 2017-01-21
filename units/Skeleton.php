@@ -4,8 +4,7 @@ require __BASEDIR__."/header.agpl";
 
 class Skeleton implements IUnit, ISkeleton{
     private $hm;
-    public function __construct(){
-        global $hm;
+    public function __construct($hm){
         $this->hm = $hm;
     }
     public function getName(){
