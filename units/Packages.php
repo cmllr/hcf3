@@ -18,6 +18,11 @@ class Packages implements IUnit{
     public function _remove(){
         echo "unlink".__BASEDIR__."/units/Packages.php";
     }
+    public function getCLIMethods(){
+        return [
+            "install <package 1> <package n>" => "Installs given package(s) to your intallation."
+        ];
+    }
     public function install($packages){
         foreach($packages as $package){
             echo "Installing $package...";

@@ -2,18 +2,20 @@
 namespace hitchhike2;
 use \hitchhike2;
 define("__BASEDIR__",__DIR__);
+define("__VERSION__","2.0a");
 require __DIR__."/header.agpl";
 require __DIR__."/unit.interface";
 require __DIR__."/vendor/autoload.php";
-if (php_sapi_name() !== 'cli'){
-	//Prevent browsing users from accessing hm.php directly
-	header("Location: index.php");
-}
-
 $hm = new HM($argv);
 
 class HM{
-	public function __construct($argv){
+	public $SkeletonUnit = null;
+	public $ManagerUnit = null;
+	public function __construct($argv = null){
+		if (php_sapi_name() !== 'cli'){
+			$this->setUpForWeb();
+			return;
+		}
 		if (count($argv) !== 1){
 			$params = array_slice($argv,1);
 			$className = array_shift($params);
@@ -48,12 +50,36 @@ class HM{
 		$units = $this->getUnits();
 		$this->getList($units);
 	}
+	private function setUpForWeb(){
+		$units = $this->getUnits();
+		foreach($units as $unit){
+			if (strpos($unit,"HM") === false){
+				$name ="\\hitchhike2\\".$unit;
+				$obj = new $name();
+				$implements = class_implements($obj);
+				if (in_array("hitchhike2\\ISkeleton",$implements)){
+					$this->SkeletonUnit = $obj;
+				}
+				if (in_array("hitchhike2\\IManager",$implements)){
+					$this->ManagerUnit = $obj;
+				}
+			}
+		}
+	}
 	private function getList($units){
 		foreach($units as $unit){
 			if (strpos($unit,"HM") === false){
 				$name ="\\hitchhike2\\".$unit;
 				$obj = new $name();
+				$implements = class_implements($obj);
+				if (in_array("hitchhike2\\ISkeleton",$implements)){
+					$this->SkeletonUnit = $obj;
+				}
 				echo $obj->getName().": ".$obj->getDescription()." [".$obj->getVersion()."]\n";
+				$methods = $obj->getCLIMethods();
+				foreach($methods as $method => $description){
+					echo "- ".$method .": ".$description."\n";
+				}
 			}
 		}
 	}

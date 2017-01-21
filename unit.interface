@@ -8,4 +8,13 @@ interface IUnit{
     public function getDescription();
     public function _install();
     public function _remove();
+    public function getCLIMethods();
+}
+
+interface ISkeleton{
+    public function run();
+}
+
+interface IManager{
+    public function getMeta();
 }
