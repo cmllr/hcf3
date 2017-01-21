@@ -43,6 +43,13 @@ class Skeleton implements IUnit, ISkeleton{
             function($f3) use ($template,$meta,$title,$hm) {
                 $name = $f3->get("PARAMS.name");
                 $post = $hm->PostUnit->getPost($name.".md");
+                $authors = $meta->Authors;
+                $author = null;
+                foreach($authors as $a){
+                    if ($a->Signature === $post->Author){
+                        $post->Author = $a;
+                    }
+                }
                 if (is_null($post)){
                     header("Location: ../404");
                     die();
