@@ -592,6 +592,8 @@ button, input, select, textarea {
 /* The author credit area after the post */
 .post-footer {
     position: relative;
+    margin: 4rem 0 0 0;
+    padding: 4rem 0 0 0;
     border-top: #424650 1px solid;
 }
 

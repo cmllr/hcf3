@@ -34,7 +34,7 @@ class Posts implements IUnit, IPostUnit{
            
         ];
     }
-    public function getPosts($path){
+    public function getFiles($path){
         $list = array();
         $files = scandir($path);
         $blacklist = array(".","..");
@@ -52,11 +52,32 @@ class Posts implements IUnit, IPostUnit{
         }
         return $list;
     }
+    public function GetPosts($path){
+        $files = $this->getFiles($path);
+        $posts = [];
+        foreach($files as $post){
+            $posts[] = $this->getPost($post);
+        }
+        usort($posts,function($a,$b){
+            return $a->Date < $b->Date;
+        });
+        return $posts;
+    }
+    public function getPostByURL($url){
+        $posts = $this->GetPosts(__BASEDIR__."/content");
+        foreach($posts as $post){
+            if ($post->URL === $url){
+                return $post;
+            }
+        }
+        return null;
+    }
     public function getPost($name){
         $path = __BASEDIR__."/content/$name";
         if (!file_exists($path)){
             return null;
         }else{
+            $meta = \json_decode(file_get_contents(__BASEDIR__."/content/blog.json"));
             $content = file_get_contents($path);
             $lines = explode("\n",$content);
             $post = new Post();
@@ -64,17 +85,30 @@ class Posts implements IUnit, IPostUnit{
             $post->Content = str_replace($lines[0],"",$content);            
             $post->Tags = [];
             $tags = [];
-            preg_match_all("/(?<tag>#[^\s]+)/",$content,$tags);
+            preg_match_all("/(?<tag>(#|\~)[^\s\#]+)/",$content,$tags);
             if(count($tags["tag"]) > 0){
                 foreach($tags["tag"] as $tag){
-                    $post->Tags[] = str_replace("#","",$tag);
-                    $post->Hidden = $tag === "#hidden";
-                    $post->Content = str_replace($tag,"",$post->Content);
+                    //fallback for 0.4
+                    if (strpos($tag,"(") === false){
+                        $post->Tags[] = strtolower(str_replace(["#","~"],"",$tag));
+                        $post->Hidden = $tag === "#hidden";
+                        $post->Content = str_replace($tag,"",$post->Content);
+                    }
                 }
             }
-            $post->URL = str_replace(".md","",$name);
+            $post->URL = urlencode(str_replace([".md","?"],"",$name));
             $post->Date = filemtime($path);
-            $post->Author = null;
+            if ($post->Author === null){
+                foreach($meta->Authors as $a){
+                    if (strpos($post->Content,$a->Signature) !== false){
+                        $post->Author = $a;
+                        break;
+                    }
+                }
+            }
+            if ($post->Author === null){
+                $post->Author = $meta->Authors[0];
+            }
             $this->runContentCommands($post);
             return $post;
         }
@@ -86,7 +120,12 @@ class Posts implements IUnit, IPostUnit{
         $propsSet = [];
         foreach($matches["what"] as $index => $match){
             $rawparam = $matches["param"][$index];
-            $param = $rawparam === "today" ? time() : $rawparam; //"Sticky post"
+            if ($match === "date"){
+                $param = $rawparam === "today" ? time() : strtotime($rawparam); //"Sticky post"
+            }else{
+                $param = $rawparam;
+            }
+            
 
             foreach($post as $prop => $val){
                 if (strtolower($prop) === strtolower($match)){
@@ -98,7 +137,11 @@ class Posts implements IUnit, IPostUnit{
         }
         foreach($matches["what"] as $index => $match){
             $rawparam = $matches["param"][$index];
-            $param = $rawparam === "today" ? time() : $rawparam; //"Sticky post"
+            if ($match === "date"){
+                $param = $rawparam === "today" ? time() : strtotime($rawparam); //"Sticky post"
+            }else{
+                $param = $rawparam;
+            }
             $post->{$match} = $param;
             $post->Content = str_replace("~".$match."(".$rawparam.")","",$post->Content);
         }

@@ -33,15 +33,25 @@
 
     <?php if($f3->get("PARAMS.name") !== null) :?>
 	        <footer class="post-footer">
+                <?php if(count($post->Tags) > 0) :?>
+                    <section class="unit">
+                        <div style="text-align:center;   margin-bottom: -1em">
+                            <?php foreach($post->Tags as $tag) :?>
+                                <a style="text-decoration: none;font-weight: 500;" href="<?php echo $meta->URL;?>tag/<?php echo $tag;?>/">#<?php echo $tag;?></a>
+                            <?php endforeach;?>
+                        </div>
+                    </section>
+                <?php endif;?>
                 <section class="unit">
-                <?php 
-                foreach($hm->Units["hitchhike2\\IWebUnit"] as $unit){
-                        if (in_array("after-post",$unit->getEntryPoints())){
-                            $unit->run();
+                    <?php 
+                    foreach($hm->Units["hitchhike2\\IWebUnit"] as $unit){
+                            if (in_array("after-post",$unit->getEntryPoints())){
+                                $unit->run();
+                            }
                         }
-                    }
-                ?>
+                    ?>
                 </section>
+                
                 <div class="post-post-meta">
                     <section class="author">
                         <h4><?php echo $post->Author->Name;?></h4>

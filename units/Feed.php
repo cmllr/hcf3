@@ -60,8 +60,7 @@ class Feed implements IUnit,IWebUnit{
                     $needle = $f3->get("PARAMS.tag");
                 }
                 //TODO: TAG
-                foreach ($posts as $post) {
-                    $entry = $hm->PostUnit->getPost($post);
+                foreach ($posts as $entry) {
                     $display = true;
                     if ($needle !== null){
                         if (!in_array($needle,$entry->Tags)){

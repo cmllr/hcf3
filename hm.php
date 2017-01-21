@@ -1,7 +1,8 @@
 <?php
 namespace hitchhike2;
 define("__BASEDIR__",__DIR__);
-define("__VERSION__","2.0a");
+define("__VERSION__","0.5");
+define("__CODENAME__","Colin");
 require __DIR__."/header.agpl";
 require __DIR__."/unit.interface";
 require __DIR__."/vendor/autoload.php";
@@ -16,6 +17,8 @@ class HM{
 		if (php_sapi_name() !== 'cli'){
 			$this->setUpForWeb();
 			return;
+		}else{
+			$this->setUpForCLI();
 		}
 		if (count($argv) !== 1){
 			$params = array_slice($argv,1);
@@ -70,6 +73,27 @@ class HM{
 		$this->ManagerUnit = $this->Units["hitchhike2\\IManager"][0];
 		$this->PostUnit = $this->Units["hitchhike2\\IPostUnit"][0];
 	}
+	private function setUpForCLI(){
+		$units = $this->getUnits();
+		foreach($units as $unit){
+			if (strpos($unit,"HM") === false){
+				$name ="\\hitchhike2\\".$unit;
+				$obj = new $name($this);
+				$implements = class_implements($obj);
+				if (in_array("hitchhike2\\IUnit",$implements)){
+					foreach($implements as $interface){
+						if (!isset($this->Units[$interface])){
+							$this->Units[$interface] = [];
+						}
+						$this->Units[$interface][] = $obj;
+					}	
+				}
+			}
+		}
+		$this->SkeletonUnit = $this->Units["hitchhike2\\ISkeleton"][0];
+		$this->ManagerUnit = $this->Units["hitchhike2\\IManager"][0];
+		$this->PostUnit = $this->Units["hitchhike2\\IPostUnit"][0];
+	}
 	private function getList($units){
 		foreach($units as $unit){
 			if (strpos($unit,"HM") === false){
@@ -77,9 +101,6 @@ class HM{
 				$obj = new $name($this);
 				$implements = class_implements($obj);
 				if (in_array("hitchhike2\\IUnit",$implements)){
-					if (in_array("hitchhike2\\ISkeleton",$implements)){
-						$this->SkeletonUnit = $obj;
-					}
 					echo $obj->getName().": ".$obj->getDescription()." [".$obj->getVersion()."]\n";
 					$methods = $obj->getCLIMethods();
 					foreach($methods as $method => $description){

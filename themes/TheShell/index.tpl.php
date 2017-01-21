@@ -18,12 +18,42 @@
     </div>
 </header>
 <?php
+   /* $suffix = isset($php->post->query) ? "&query=".$php->post->query : "";
+    if (empty($suffix) && isset($php->get->query)){
+        $suffix = "&query=".$php->get->query;
+    }*/
+    $postCount = count($posts);
+    $currentSite = $f3->get("GET.site") !== null ? (int)$f3->get("GET.site") : 1;
+    
+    $allPageCount = $postCount/5.0;
+    $fullPageCount = ceil($postCount/5.0);
+    $min = 0;
+    $max = $fullPageCount;
+    //filter
+    $offset = $currentSite == 1 ? 0 : ($currentSite -1)*5.0;
+    $posts = array_slice($posts,$offset,$currentSite*5.0);
+            
+    $canGoBack = $currentSite -1 != 0;
+    $canGoForward = $currentSite < $max;
+?>
+<?php
 
     $markdown = new Parsedown();
     foreach($posts as $post){
-        $post = $hm->PostUnit->getPost($post);
         if (!is_null($post)){
             include __DIR__."/post.tpl.php";
         }
     }
 ?>
+
+<nav class="pagination" role="navigation">
+    <span class="page-number">
+        <?php echo $currentSite;?>/ <?php echo $max;?>
+    </span>
+    <?php if ($canGoBack) :?>
+        <a class="newer-posts" href="?site=<?php echo $currentSite-1;?><?php echo $suffix;?>"><span aria-hidden="true">←</span></a>
+    <?php endif;?>
+    <?php if ($canGoForward) :?>
+        <a class="older-posts" href="?site=<?php echo $currentSite+1;?><?php echo $suffix;?>"><span aria-hidden="true">→</span></a>
+    <?php endif;?>
+</nav>
