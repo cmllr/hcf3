@@ -23,3 +23,8 @@ interface IPostUnit{
     public function getPosts($path);
     public function getPost($name);
 }
+
+interface IWebUnit{
+    public function getEntryPoints();
+    public function run();
+}

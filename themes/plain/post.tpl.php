@@ -1,8 +1,8 @@
 <?php
     $markdown = new Parsedown();
 ?>
-<a href="post/<?php echo $post->URL;?>/"><h1><?php echo $post->Title;?></h1></a>
-
+<a href="<?php echo $meta->URL;?>post/<?php echo $post->URL;?>/"><h1><?php echo $post->Title;?></h1></a>
+Date: <?php echo $post->Date;?>
 <div>
     <?php echo $markdown->text($post->Content);?>
 </div>

@@ -1,6 +1,10 @@
 <html>
     <head>
-        <meta name="generator" value="Hitchhike <?php echo __VERSION__;?>">
+        <?php 
+            foreach($hm->Units["hitchhike2\\IWebUnit"] as $unit){
+                $unit->run();
+            }
+        ?>
         <title><?php echo $title;?></title>
     </head>
     <body>

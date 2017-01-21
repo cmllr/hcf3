@@ -12,6 +12,7 @@ class HM{
 	public $SkeletonUnit = null;
 	public $ManagerUnit = null;
 	public $PostUnit = null;
+	public $Units = [];
 	public function __construct($argv = null){
 		if (php_sapi_name() !== 'cli'){
 			$this->setUpForWeb();
@@ -58,17 +59,17 @@ class HM{
 				$name ="\\hitchhike2\\".$unit;
 				$obj = new $name();
 				$implements = class_implements($obj);
-				if (in_array("hitchhike2\\ISkeleton",$implements)){
-					$this->SkeletonUnit = $obj;
-				}
-				if (in_array("hitchhike2\\IManager",$implements)){
-					$this->ManagerUnit = $obj;
-				}
-				if (in_array("hitchhike2\\IPostUnit",$implements)){
-					$this->PostUnit = $obj;
+				foreach($implements as $interface){
+					if (!isset($this->Units[$interface])){
+						$this->Units[$interface] = [];
+					}
+					$this->Units[$interface][] = $obj;
 				}
 			}
 		}
+		$this->SkeletonUnit = $this->Units["hitchhike2\\ISkeleton"][0];
+		$this->ManagerUnit = $this->Units["hitchhike2\\IManager"][0];
+		$this->PostUnit = $this->Units["hitchhike2\\IPostUnit"][0];
 	}
 	private function getList($units){
 		foreach($units as $unit){

@@ -64,7 +64,7 @@ class Posts implements IUnit, IPostUnit{
             $post->Content = str_replace($lines[0],"",$content);            
             $post->Tags = [];
             $tags = [];
-            preg_match_all("/(?<tag>(#|\~)[^\s]+)/",$content,$tags);
+            preg_match_all("/(?<tag>#[^\s]+)/",$content,$tags);
             if(count($tags["tag"]) > 0){
                 foreach($tags["tag"] as $tag){
                     $post->Tags[] = str_replace("#","",$tag);
@@ -80,13 +80,18 @@ class Posts implements IUnit, IPostUnit{
         }
     }
     public function runContentCommands($post){
-        $pattern = "/(?<what>[a-zA-z]+)\((?<param>[^\)]+)\)/";
+        $pattern = "/~(?<what>[a-zA-z]+)\((?<param>[^\)]+)\)/";
         $matches  = [];
         preg_match_all($pattern,$post->Content,$matches);
         foreach($matches["what"] as $index => $match){
-            $param = $matches["param"][$index];
-            $post->{$match} = $param;
-            $post->Content = str_replace($match."(".$param.")","",$post->Content);
+            $rawparam = $matches["param"][$index];
+            $param = $rawparam === "today" ? time() : $rawparam; //"Sticky post"
+            foreach($post as $prop => $val){
+                if (strtolower($prop) === strtolower($match)){
+                    $post->{$prop} = $param;
+                }
+            }
+            $post->Content = str_replace("~".$match."(".$rawparam.")","",$post->Content);
         }
     }
 }

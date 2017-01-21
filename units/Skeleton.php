@@ -47,6 +47,7 @@ class Skeleton implements IUnit, ISkeleton{
                     header("Location: ../404");
                     die();
                 }
+                $title = $post->Title ."-".$meta->Name;
                 $inner = $template."/post.tpl.php";
                 require_once $template."/template.tpl.php";
             }
