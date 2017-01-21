@@ -83,14 +83,23 @@ class Posts implements IUnit, IPostUnit{
         $pattern = "/~(?<what>[a-zA-z]+)\((?<param>[^\)]+)\)/";
         $matches  = [];
         preg_match_all($pattern,$post->Content,$matches);
+        $propsSet = [];
         foreach($matches["what"] as $index => $match){
             $rawparam = $matches["param"][$index];
             $param = $rawparam === "today" ? time() : $rawparam; //"Sticky post"
+
             foreach($post as $prop => $val){
                 if (strtolower($prop) === strtolower($match)){
                     $post->{$prop} = $param;
+                    $propsSet[] = $match;
                 }
             }
+            $post->Content = str_replace("~".$match."(".$rawparam.")","",$post->Content);
+        }
+        foreach($matches["what"] as $index => $match){
+            $rawparam = $matches["param"][$index];
+            $param = $rawparam === "today" ? time() : $rawparam; //"Sticky post"
+            $post->{$match} = $param;
             $post->Content = str_replace("~".$match."(".$rawparam.")","",$post->Content);
         }
     }

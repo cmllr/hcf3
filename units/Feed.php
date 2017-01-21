@@ -35,7 +35,10 @@ class Feed implements IUnit,IWebUnit{
     public function run(){
         $f3 = \Base::instance();
         $hm = $this->hm;
-        $f3->route('GET /feed',
+        $f3->route([
+                'GET /feed/@tag',
+                'GET /feed'
+            ],
             function($f3) use ($template,$meta,$title,$hm){
                 header("Content-type: text/xml");
                 $feed = new \Suin\RSSWriter\Feed();
@@ -52,21 +55,35 @@ class Feed implements IUnit,IWebUnit{
                 $posts = array_filter($hm->PostUnit->getPosts(__BASEDIR__."/content/"),function($p){
                     return !$p->Hidden;
                 });
-                $query = null;
-
+                $needles = null;
+                if ($f3->get("PARAMS.tag") !== null){
+                    $needle = $f3->get("PARAMS.tag");
+                }
                 //TODO: TAG
                 foreach ($posts as $post) {
                     $entry = $hm->PostUnit->getPost($post);
-                    $item = new \Suin\RSSWriter\Item();
-                    $name = !empty($entry->Author->Name)? $entry->Author->Name : $meta->Name;
-                    $item
-                            ->title($entry->Title)
-                            ->description($Parsedown->text($entry->Content))
-                            ->url($blog->URL."/post/" . $entry->URL."/")
-                            ->pubDate($entry->Date)
-                            ->guid($blog->URL."/post/" . $entry->URL."/", true)
-                            ->author($name)
-                            ->appendTo($channel);
+                    $display = true;
+                    if ($needle !== null){
+                        if (!in_array($needle,$entry->Tags)){
+                            $display = false;
+                        }
+                        if (!$display && strpos($entry->Content,$needle) !== false){
+                            $display = true;
+                        }
+                    }
+                    if ($display){
+                        $item = new \Suin\RSSWriter\Item();
+                        $name = !empty($entry->Author->Name)? $entry->Author->Name : $meta->Name;
+                        $item
+                                ->title($entry->Title)
+                                ->description($Parsedown->text($entry->Content))
+                                ->url($blog->URL."/post/" . $entry->URL."/")
+                                ->pubDate($entry->Date)
+                                ->guid($blog->URL."/post/" . $entry->URL."/", true)
+                                ->author($name)
+                                ->appendTo($channel);
+                    }
+
                 }
                 echo $feed;
             }

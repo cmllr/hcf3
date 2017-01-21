@@ -25,7 +25,7 @@ class HM{
 			$existing = class_exists("\\hitchhike2\\".$className);
 			if ($existing){
 				$name ="\\hitchhike2\\".$className;
-				$obj = new $name();
+				$obj = new $name($this);
 				$args = array_slice($argv, 3,count($argv)-3);
 				call_user_func(array($obj,$method),$args);
 			}else{
@@ -75,7 +75,7 @@ class HM{
 		foreach($units as $unit){
 			if (strpos($unit,"HM") === false){
 				$name ="\\hitchhike2\\".$unit;
-				$obj = new $name();
+				$obj = new $name($this);
 				$implements = class_implements($obj);
 				if (in_array("hitchhike2\\IUnit",$implements)){
 					if (in_array("hitchhike2\\ISkeleton",$implements)){
@@ -90,7 +90,7 @@ class HM{
 			}
 		}
 	}
-	private function runComposerUpdate(){
+	public function runComposerUpdate(){
 		$result = -1;
 		$output = [];
 		exec("composer dumpautoload -o 2>&1",$output,$result);
