@@ -14,7 +14,7 @@
             }
         }
     ?>
-    <link rel="stylesheet" type="text/css" href="<?php echo $meta->URL;?>themes/The-Shell/assets/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $meta->URL;?>themes/TheShell/assets/css/screen.css" />
 </head>
 
     <?php
@@ -23,10 +23,10 @@
     <footer class="site-footer">
         <div class="inner">
             <section class="copyright"><?php echo $meta->Copyright;?></section>
-            <section class="poweredby">Proudly published with Hitchhike in <a href="https://github.com/mityalebedev/The-Shell">The Shell</a> theme.</section>
+            <section class="poweredby">Proudly published with Hitchhike in <a href="https://github.com/mityalebedev/TheShell">The Shell</a> theme.</section>
         </div>
     </footer>
-    <script type="text/javascript" src="<?php echo $meta->URL;?>themes/The-Shell/particles.min.js"></script>
+    <script type="text/javascript" src="<?php echo $meta->URL;?>themes/TheShell/particles.min.js"></script>
 	<script data-no-instant>
 		particlesJS("particles", {
 		  "particles": {
