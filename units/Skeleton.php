@@ -53,7 +53,7 @@ class Skeleton implements IUnit, ISkeleton{
                 $url = $meta->URL."post/".$post->URL."/";
                 $entry = "<url>\n".
                         "<loc>".$url."</loc>\n".
-                        "<lastmod>".$post->Date."</lastmod>\n".
+                        "<lastmod>".date("Y-m-d",$post->Date)."</lastmod>\n".
                         "<changefreq>monthly</changefreq>\n".
                         "<priority>1</priority>\n".
                     "</url>\n";
