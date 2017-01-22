@@ -1,8 +1,6 @@
 <?php
 namespace hitchhike2;
 define("__BASEDIR__",__DIR__);
-define("__VERSION__","0.5");
-define("__CODENAME__","Colin");
 require __DIR__."/header.agpl";
 require __DIR__."/unit.interface";
 require __DIR__."/vendor/autoload.php";
@@ -29,7 +27,7 @@ class HM{
 				$name ="\\hitchhike2\\".$className;
 				$obj = new $name($this);
 				$args = array_slice($argv, 3,count($argv)-3);
-				call_user_func(array($obj,$method),$args);
+				@call_user_func(array($obj,$method),$args);
 			}else{
 				echo "Unit not found. Use hm.php help for more information\n";
 			}
@@ -104,7 +102,7 @@ class HM{
 					echo $obj->getName().": ".$obj->getDescription()." [".$obj->getVersion()."]\n";
 					$methods = $obj->getCLIMethods();
 					foreach($methods as $method => $description){
-						echo "- hm.php ".$obj->getName()." ".$method .": ".$description."\n";
+						echo "- php hm.php ".$obj->getName()." ".$method .": ".$description."\n";
 					}		
 				}
 			}
