@@ -6,7 +6,7 @@ class Post {
     public $Title;
     public $URL;
     public $Content;
-    public $Date;
+    public $Date = null;
     public $Author;
     public $Image;
     public $Tags;
@@ -122,7 +122,7 @@ class Posts implements IUnit, IPostUnit{
                 }
             }
             $post->URL = urlencode(str_replace([".md","?"],"",$name));
-            $post->Date = filemtime($path);
+            $post->Date = $post->Date  === null ?  filemtime($path) : $post->Date;
             if ($post->Author === null){
                 foreach($meta->Authors as $a){
                     if (strpos($post->Content,$a->Signature) !== false){
