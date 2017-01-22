@@ -96,7 +96,7 @@ class Skeleton implements IUnit, ISkeleton{
                 $title = $tag ."-".$meta->Name;
                 $posts = $hm->PostUnit->getPosts(__BASEDIR__."/content/");
                 $posts = array_filter($posts,function($p) use ($tag){
-                    return in_array($tag,$p->Tags) || strpos(strtolower($p->Content),strtolower($tag)) !== false;
+                    return in_array($tag,$p->Tags) || strpos(strtolower($p->Content),strtolower($tag)) !== false || strpos(strtolower($p->Title),strtolower($tag)) !== false;
                 });
                 require_once $template."/template.tpl.php";
             }
