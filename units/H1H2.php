@@ -40,7 +40,7 @@ class H1H2 implements IUnit,IWebUnit{
     public function run(){
         $meta = $this->hm->ManagerUnit->getMeta();
         $target = $_SERVER["QUERY_STRING"];
-        if (strpos($target,"/post")){
+        if (strpos($target,"post/") !== false){
             $target = urldecode(str_replace(["/post/","/"],"",$target));
             if(strpos($_SERVER["REQUEST_URI"],"?/post/") !== false){
                 header("HTTP/1.1 301 Moved Permanently");
