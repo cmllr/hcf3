@@ -28,7 +28,8 @@ class Packages implements IUnit{
             "install <package 1> <package n>" => "Installs given package(s) to your intallation.",
             "remove <package 1> <package n>" => "Remove given package(s) from your installation.",
             "search <package 1> <package n>" => "Search for given package(s) on the master server.",
-            "update" => "Update Hitchhike and it's packages"
+            "update" => "Update Hitchhike and it's packages",
+            "composer" => "Update composer dependencies and update autoloader"
         ];
     }
     public function install($packages){
@@ -117,7 +118,7 @@ class Packages implements IUnit{
             }
         }
     }
-    private function runComposerUpdate(){
+    public function composer(){
 		exec("composer update");
 		exec("composer dumpautoload -o");
 	}

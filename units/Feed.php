@@ -18,9 +18,10 @@ class Feed implements IUnit,IWebUnit{
         return "Feed unit";
     }
     public function _install(){
-
+		exec("composer require suin/php-rss-writer");
     }
     public function _remove(){
+		exec("composer remove suin/php-rss-writer");
         $result = unlink(__BASEDIR__."/units/Feed.php");
         if ($result){
             echo "Feed removed.\n";
