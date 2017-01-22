@@ -16,7 +16,13 @@
     ?>
     <link rel="stylesheet" type="text/css" href="<?php echo $meta->URL;?>themes/TheShell/assets/css/screen.css" />
 </head>
-
+<form action="" class="search" method="get" style="
+    z-index: 100000000;
+    position: fixed;
+    right: 1em;
+		top:0.2em">
+	<input type="text" style="    background-color: rgba(255, 255, 255, 0);" name ="query" value="<?php echo $f3->get('PARAMS.needle') !== null ? $f3->get('PARAMS.needle') : '';?>" >
+</form>
     <?php
 		require_once $inner;
 	?>

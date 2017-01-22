@@ -34,11 +34,11 @@ class H1H2 implements IUnit,IWebUnit{
     }
     public function run(){
         $meta = $this->hm->ManagerUnit->getMeta();
-        $target = array_shift(array_keys($_REQUEST));
-        
+        $target = $_SERVER["QUERY_STRING"];
+        $target = urldecode(str_replace(["/post/","/"],"",$target));
         if(strpos($_SERVER["REQUEST_URI"],"?/post/") !== false){
             header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$meta->URL.str_replace("/post","post",$target));
+            header("Location: ".$meta->URL."post/".$target);
         }
         if(strpos($_SERVER["REQUEST_URI"],"?/feed/") !== false){
             header("HTTP/1.1 301 Moved Permanently");

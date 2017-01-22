@@ -10,7 +10,7 @@ class Post {
     public $Author;
     public $Image;
     public $Tags;
-    public $Hidden;
+    public $Hidden = false;
     public $Page;
 }
 
@@ -104,10 +104,13 @@ class Posts implements IUnit, IPostUnit{
             if(count($tags["tag"]) > 0){
                 foreach($tags["tag"] as $tag){
                     //fallback for 0.4
-                    if (strpos($tag,"(") === false){
+                    if (strpos($tag,"(") === false && !($tag === "#hidden" || $tag === "~hidden")){
                         $post->Tags[] = strtolower(str_replace(["#","~"],"",$tag));
-                        $post->Hidden = $tag === "#hidden";
                         $post->Content = str_replace($tag,"",$post->Content);
+                    }
+                    if ($post->Hidden === false){
+                        $post->Hidden = $tag === "#hidden" || $tag === "~hidden";
+                        $post->Content =  str_replace($tag,"",$post->Content);
                     }
                 }
             }

@@ -70,6 +70,9 @@ class Skeleton implements IUnit, ISkeleton{
         $pages = $hm->PostUnit->getPages(__BASEDIR__."/content/");
         $f3->route('GET /',
             function($f3) use ($template,$meta,$title,$hm,$pages){
+                if ($f3->get("GET.query") !== null){
+                    header("Location: ".$meta->URL."search/".$f3->get("GET.query"));
+                }
                 $inner = $template."/index.tpl.php";
                 $posts = $hm->PostUnit->getPosts(__BASEDIR__."/content/");
                 require_once $template."/template.tpl.php";
@@ -80,6 +83,9 @@ class Skeleton implements IUnit, ISkeleton{
                 'GET /search/@needle'
             ],
             function($f3) use ($template,$meta,$title,$hm,$pages){
+                if ($f3->get("GET.query") !== null){
+                    header("Location: ".$meta->URL."search/".$f3->get("GET.query"));
+                }
                 $inner = $template."/index.tpl.php";
                 $tag = $f3->get("PARAMS.needle");
                 $title = $tag ."-".$meta->Name;
@@ -92,6 +98,9 @@ class Skeleton implements IUnit, ISkeleton{
         );
         $f3->route('GET /post/@name',
             function($f3) use ($template,$meta,$title,$hm,$pages) {
+                if ($f3->get("GET.query") !== null){
+                    header("Location: ".$meta->URL."search/".$f3->get("GET.query"));
+                }
                 $name = $f3->get("PARAMS.name");
                 $post = $hm->PostUnit->getPostByURL(urlencode($name));
                 $authors = $meta->Authors;
@@ -103,6 +112,7 @@ class Skeleton implements IUnit, ISkeleton{
                 }
                 if (is_null($post)){
                     //header("Location: ../404");
+                    var_dump($post);
                     die();
                 }
                 $title = $post->Title ."-".$meta->Name;
