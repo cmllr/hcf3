@@ -27,7 +27,8 @@ class Packages implements IUnit{
         return [
             "install <package 1> <package n>" => "Installs given package(s) to your intallation.",
             "remove <package 1> <package n>" => "Remove given package(s) from your installation.",
-            "search <package 1> <package n>" => "Search for given package(s) on the master server."
+            "search <package 1> <package n>" => "Search for given package(s) on the master server.",
+            "update" => "Update Hitchhike and it's packages"
         ];
     }
     public function install($packages){
@@ -99,4 +100,25 @@ class Packages implements IUnit{
             }
         }
     }
+    public function update(){
+        $units = $this->hm->getUnits();
+        foreach($units as $unit){
+            $info = $this->info($unit);
+            $name = "\\hitchhike2\\".$unit;
+            $obj = new $name();
+            $operator = "==";
+            if (version_compare($obj->getVersion(),$info->Version) > 0){
+                $operator = "<";
+            }else if (version_compare($obj->getVersion(),$info->Version) < 0){
+                $operator = ">";
+            }
+            if ($operator === ">"){
+                echo $unit.":".($info === null ? 'n/a' : $info->Version).$operator.$obj->getVersion()."\n";
+            }
+        }
+    }
+    private function runComposerUpdate(){
+		exec("composer update");
+		exec("composer dumpautoload -o");
+	}
 }
