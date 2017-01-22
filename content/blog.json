@@ -1,4 +1,15 @@
 {
-    "Name":"Test",
-    "Theme":"plain"
+    "Name":"Your blog name",
+    "Theme":"TheShell",
+    "Title":"Your blog slogan",
+    "DateFormat":"d.m.Y,H:i",
+    "URL":"http-starting URL of your blog. Make sure it ends with '/'",
+    "Copyright":"Copyright 2012-2017 you",
+    "Authors": [
+        {
+            "Signature":"leme",
+            "Name":"User",
+            "Description":"Some words about me"
+        }
+    ]
 }
