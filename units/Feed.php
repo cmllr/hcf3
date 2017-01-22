@@ -76,6 +76,9 @@ class Feed implements IUnit,IWebUnit{
                             $display = true;
                         }
                     }
+                    if ($entry->Page === true){
+                        $display = false;
+                    }
                     if ($display){
                         $item = new \Suin\RSSWriter\Item();
                         $name = !empty($entry->Author->Name)? $entry->Author->Name : $meta->Name;
