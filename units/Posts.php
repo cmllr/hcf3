@@ -105,7 +105,7 @@ class Posts implements IUnit, IPostUnit{
             $post->Content = str_replace($lines[0],"",$content);            
             $post->Tags = [];
             $tags = [];
-            preg_match_all("/(?<tag>(#|\~)[^\s\#]+)/",$content,$tags);
+            preg_match_all("/(?<tag>~[^\s\#]+)/",$content,$tags);
 
             $this->runContentCommands($post);
             if(count($tags["tag"]) > 0){
