@@ -50,7 +50,7 @@ class Posts implements IUnit, IPostUnit{
                 if ($dir){
                     $list = array_merge($this->getFiles($path.$file."/"),$list);
                 }else{
-                    if (strpos($file,".md") !== false){
+                    if (strpos($file,".md") !== false && $file[0] !== "."){
                         $list[] = $file;
                     }
                 }
