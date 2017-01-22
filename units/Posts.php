@@ -28,7 +28,12 @@ class Posts implements IUnit, IPostUnit{
 
     }
     public function _remove(){
-        echo "unlink".__BASEDIR__."/units/Packages.php";
+        $result = unlink(__BASEDIR__."/units/Posts.php");
+        if ($result){
+            echo "Posts removed.\n";
+        }else{
+            echo "Posts NOT removed.\n";
+        }
     }
     public function getCLIMethods(){
         return [

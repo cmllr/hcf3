@@ -16,7 +16,12 @@ class Manager implements IUnit, IManager{
         var_dump(__BASEDIR__);
     }
     public function _remove(){
-
+        $result = unlink(__BASEDIR__."/units/Manager.php");
+        if ($result){
+            echo "Manager removed.\n";
+        }else{
+            echo "Manager NOT removed.\n";
+        }
     }
     public function getCLIMethods(){
         return [];

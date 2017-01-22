@@ -21,7 +21,12 @@ class H1H2 implements IUnit,IWebUnit{
 
     }
     public function _remove(){
-        echo "unlink".__BASEDIR__."/units/Packages.php";
+        $result = unlink(__BASEDIR__."/units/H1H2.php");
+        if ($result){
+            echo "H1H2 removed.\n";
+        }else{
+            echo "H1H2 NOT removed.\n";
+        }
     }
     public function getCLIMethods(){
         return [

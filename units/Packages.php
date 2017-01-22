@@ -21,7 +21,7 @@ class Packages implements IUnit{
 
     }
     public function _remove(){
-        echo "unlink".__BASEDIR__."/units/Packages.php";
+        echo "You cannot remove the package unit by hm.php\n";
     }
     public function getCLIMethods(){
         return [
@@ -53,7 +53,7 @@ class Packages implements IUnit{
                     file_put_contents(__BASEDIR__."/units/".$fileName,$content);
                     require_once(__BASEDIR__."/units/".$fileName);
                     $this->hm->runComposerUpdate();
-                    $name = "\\".$package; //TODO: For deployment: Change to hitchhike2-ns
+                    $name = "\\hitchhike2\\".$package; 
                     $obj = new $name();
                     $obj->_install();
                     echo "done.\n";
@@ -92,7 +92,7 @@ class Packages implements IUnit{
                 echo "Not found!\n";
             }else{
                 require_once(__BASEDIR__."/units/".$package.".php");
-                $name = "\\".$package; //TODO: For deployment: Change to hitchhike2-ns
+                $name = "\\hitchhike2\\".$package; 
                 $obj = new $name();
                 $obj->_remove();
                 $this->hm->runComposerUpdate();

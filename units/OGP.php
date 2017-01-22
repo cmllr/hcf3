@@ -21,7 +21,12 @@ class OGP implements IUnit,IWebUnit{
 
     }
     public function _remove(){
-        echo "unlink".__BASEDIR__."/units/Packages.php";
+        $result = unlink(__BASEDIR__."/units/OGP.php");
+        if ($result){
+            echo "OGP removed.\n";
+        }else{
+            echo "OGP NOT removed.\n";
+        }
     }
     public function getCLIMethods(){
         return [

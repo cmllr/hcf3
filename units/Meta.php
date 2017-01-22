@@ -16,7 +16,12 @@ class Meta implements IUnit,IWebUnit{
 
     }
     public function _remove(){
-        echo "unlink".__BASEDIR__."/units/Packages.php";
+        $result = unlink(__BASEDIR__."/units/Meta.php");
+        if ($result){
+            echo "Meta removed.\n";
+        }else{
+            echo "Meta NOT removed.\n";
+        }
     }
     public function getCLIMethods(){
         return [];

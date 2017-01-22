@@ -21,7 +21,12 @@ class Feed implements IUnit,IWebUnit{
 
     }
     public function _remove(){
-        echo "unlink".__BASEDIR__."/units/Packages.php";
+        $result = unlink(__BASEDIR__."/units/Feed.php");
+        if ($result){
+            echo "Feed removed.\n";
+        }else{
+            echo "Feed NOT removed.\n";
+        }
     }
     public function getCLIMethods(){
         return [

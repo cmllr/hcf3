@@ -20,7 +20,7 @@ class Version implements IUnit,IWebUnit{
 
     }
     public function _remove(){
-        echo "unlink".__BASEDIR__."/units/Packages.php";
+        echo "You cannot remove the version meta package!\n";
     }
     public function getCLIMethods(){
         return [

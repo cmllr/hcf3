@@ -20,7 +20,12 @@ class Skeleton implements IUnit, ISkeleton{
         var_dump(__BASEDIR__);
     }
     public function _remove(){
-
+        $result = unlink(__BASEDIR__."/units/Skeleton.php");
+        if ($result){
+            echo "Skeleton removed.\n";
+        }else{
+            echo "Skeleton NOT removed.\n";
+        }
     }
     public function getCLIMethods(){
         return [
