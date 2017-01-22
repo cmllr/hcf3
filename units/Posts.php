@@ -11,7 +11,7 @@ class Post {
     public $Image;
     public $Tags;
     public $Hidden = false;
-    public $Page;
+    public $Page = false;
 }
 
 class Posts implements IUnit, IPostUnit{
@@ -106,6 +106,8 @@ class Posts implements IUnit, IPostUnit{
             $post->Tags = [];
             $tags = [];
             preg_match_all("/(?<tag>(#|\~)[^\s\#]+)/",$content,$tags);
+
+            $this->runContentCommands($post);
             if(count($tags["tag"]) > 0){
                 foreach($tags["tag"] as $tag){
                     //fallback for 0.4
@@ -132,12 +134,11 @@ class Posts implements IUnit, IPostUnit{
             if ($post->Author === null){
                 $post->Author = $meta->Authors[0];
             }
-            $this->runContentCommands($post);
             return $post;
         }
     }
     public function runContentCommands($post){
-        $pattern = "/~(?<what>[a-zA-z]+)\((?<param>[^\)]+)\)/";
+        $pattern = "/~(?<what>[a-zA-Z]+)\((?<param>[^\)]+)\)/";
         $matches  = [];
         preg_match_all($pattern,$post->Content,$matches);
         $propsSet = [];
@@ -148,7 +149,6 @@ class Posts implements IUnit, IPostUnit{
             }else{
                 $param = $rawparam;
             }
-            
             if ($match === "page"){
                 $param = $rawparam === "true";
             }
