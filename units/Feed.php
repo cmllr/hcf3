@@ -39,8 +39,9 @@ class Feed implements IUnit,IWebUnit{
         ];
     }
     public function run(){
-        $f3 = \Base::instance();
+        $meta = $this->hm->ManagerUnit->getMeta();
         $hm = $this->hm;
+        $f3 = \Base::instance();
         $f3->route([
                 'GET /feed/@tag',
                 'GET /feed'
@@ -85,9 +86,9 @@ class Feed implements IUnit,IWebUnit{
                         $item
                                 ->title($entry->Title)
                                 ->description($Parsedown->text($entry->Content))
-                                ->url($blog->URL."/post/" . $entry->URL."/")
+                                ->url($meta->URL."post/" . $entry->URL."/")
                                 ->pubDate($entry->Date)
-                                ->guid($blog->URL."/post/" . $entry->URL."/", true)
+                                ->guid($meta->URL."post/" . $entry->URL."/", true)
                                 ->author($name)
                                 ->appendTo($channel);
                     }
